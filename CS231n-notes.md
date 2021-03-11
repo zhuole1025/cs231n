@@ -1051,6 +1051,7 @@ Neural Architecture Search
 * Language Modeling
   * Encode inputs as one-hot-vector
   * Embedding layer
+  
 * GPT-2
   
 * Forward the entire sequence to compute the loss, the backward through entire sequence to compute gradient
@@ -1108,18 +1109,20 @@ Neural Architecture Search
   * One to many (Decoder): $s_t=g_U(y_{t-1},h_{t-1},c)$
   * Input sequence bottlenecked through fixed-sized vector
 
-* Attention
+  #### Attention
+  
   * Alignment scores: $e_{t,i}=f_{att}(s_{t-1},h_i)$      ($f_{att}$ is an MLP)
   * normalize alignment scores to get attention weights (using Softmax) : $\sum_ia_{t,i}=1, 0<a_{t,i}<1$
   * Compute context vector as linear combination of hidden states: $c_t=\sum_ia_{t,i}h_i$
-  * Use conyexy vector om decoders: $s_t=g_U(y_{t-1},c_t,s_{t-1})$
+  * Use context vector on decoders: $s_t=g_U(y_{t-1},c_t,s_{t-1})$
   * Image captioning with RNNs and Attention: Each tilmestep of decoder uses a different context vector that looks at different parts of the input image
+  * The decoder doesn't use the fact that $h_i$ form an ordered sequence - it just treats them as an unordered set $\{h_i\}$
   * X, Attend, and Y: Show, attend, and tell/read
   * Attention Layer:
     * Inputs:
       1. Query vector: $Q$  (Shape: $N_Q \times D_Q$) (Multiple query vectors)
       2. Input vectors: $X$ (Shape: $N_X\times D_X$)
-      3. Similarity function: scaled dot product instead of $f_{att}$
+      3. Similarity function: scaled dot product instead of $f_{att}$ (large similarities will cause softmax to saturate and give vanishing gradients)
     * Computation:
       1. Similarities: $E=QX^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot X_j/sqrt(D_Q)$
       2. Attention weights: $A=softmax(E, dim=1)$ (Shape: $N_Q\times N_X$)
@@ -1156,7 +1159,7 @@ Neural Architecture Search
     * use $H$ independent Attention Heads in parallel
     * Hyperparameters: Query dimension $D_Q$, Number of heads $H$
   * "Self-Attention Generative Adversarial Networks"
-
+  
 * Three Ways of Processing Sequences
   1. RNN
      * Works on Ordered Sequences
@@ -1209,6 +1212,7 @@ Neural Architecture Search
   * Saliency via Occlusion: mask part of the image before feeding to CNN, check how much predicted probabilities change
   * Saliency via Backprop
 * Intermediate Features via (guided) Backprop
+* Class Activation Mapping
 * Gradient Ascent
   * Generate a synthetic image that maximally activates a neuron
   * $I^*=argmax_If(I)+R(I)$
@@ -1228,31 +1232,31 @@ Neural Architecture Search
 
 ### Object Detection
 
-Task Definition
+##### Task Definition
 
 * Input: Single RGB Image
 * Output: A set of detected objects; for each object predict:
   * Category label (from fixed, known set of categories)
   * Bouding box (four numbers: x, y, width, height)
 
-Challenges
+##### Challenges
 
 * Multiple outputs
 * Multiple types of output: "what" and "where"
 * Large images: higher resolution for detection
 
-Detecting a single object:
+##### Detecting a single object:
 
 * Correct label: Softmax Loss
 * Correct box: L2 Loss
 * Multitask Loss: Weighted Sum
 
-Detecting multiple object: Sliding Window
+##### Detecting multiple object: Sliding Window
 
 * Object or background
 * Region Proposals: find a small set of boxes that are likely to cover all objects
 
-R-CNN: Region-Based CNN
+##### R-CNN: Region-Based CNN
 
 * Reigions of interest from a proposal method
   * Categorize each region proposal as positive, negative, or neutral based on overlap with ground-truth boxes 
@@ -1290,13 +1294,14 @@ R-CNN: Region-Based CNN
   * mAP = average of AP for each category
   * For "COCO mAP": Compute mAP@thresh for each IoU threshold (0.5, 0.55, 0.6, ..., 0.95) and take average
 
-Fast R-CNN
+##### Fast R-CNN
 
 * Add backbone network before region proposals
 * Cropping Features: RoI Pool / RoI Align (bilinear interpolation)
-  * Must be differentiable for bp
+  * Must be differentiable for backprop
+* Problem: Runtime dominated by region proposals
 
-Faster R-CNN
+##### Faster R-CNN
 
 * Insert Region Proposal Network to predict proposals from features
   * Imagine an anchor box of fixed size at each point in the feature map
@@ -1309,6 +1314,7 @@ Faster R-CNN
   * RPN regression
   * Object classification
   * Object regression
+* Ignore overlapping proposals with non-max suppression
 * Two-stage object detector
   * First stage: Run once per image
     * Backbone network
@@ -1318,6 +1324,7 @@ Faster R-CNN
     * Predict object class
     * Predict Bbox offset
 * Single-stage object dection
+  * YOLO / SSD / RetinaNet
 * Feature Pyramid Networks
 
 ### Segmentation
@@ -1338,7 +1345,8 @@ Fully Convolutional Network
     * Max Unpooling: place max value into remembered positions, padding with 0 
   * Learnable Upsampling: Transposed Convolution
     * Weight filter by input value and copy to output
-    * Sun overlaps
+    * Stride gives ratio between movement in output and input
+    * Sum overlaps
 
 ##### Instance Segmentation
 
@@ -1506,7 +1514,7 @@ Generative Modeling
 
   * $W^*=argmax_W\prod_ip(x^{(i)})$ (Maximum likelihood estimation)
   * $W^*=argmax_W\sum_ilog\ p(x^{(i)})$ (Log trick to exchange product for sum)
-  * $W^*=argmax_W\sum_ilog\ f(x^{(i)},W)$ (Train the gradient descent)
+  * $W^*=argmax_W\sum_ilog\ f(x^{(i)},W)$ (Train with gradient descent)
 * $p(x)=\prod^T_{t=1}p(x_t|x_i, ...,x_{t-1})$ -> RNN
 * PixelRNN
 
@@ -1530,7 +1538,6 @@ Generative Modeling
   2. Sample from the model to generate new data
      * Assume simple prior p(z), e.g. Gaussian
      * Represent p(x|z) with a neural network (similar to decoder)
-
 * Independet assumption: pixels are conditional independent given the latent features
 * Train
   * Maximize likelihood of data $p_\theta(x)=\frac{p_\theta(x|z)p_\theta(z)}{p_\theta(z|x)}$
@@ -1543,11 +1550,12 @@ Generative Modeling
     3. Sample code z from encoder output
     4. run sampled code through decoder to get a distribution over data samples
     5. Original input data should be likely under the distribution output from (4)
-
 * Generating data
   1. Sample z from prior p(z)
   2. run sampled z through decoder to get distribution over data x
   3. sample from distribution in (2) to generate data
+* Edit images: modify some dimensions of sampled z
+* Combining VAE + Autoregressive: VQ-VAE2
 
 #### Generative Adversarial Network
 
