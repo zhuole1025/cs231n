@@ -31,13 +31,6 @@ piazza
 
 ### p4 
 
-##### Assignment 1
-
-* KNN
-* SVM, Softmax
-* Two-layer neural network
-* Image features
-
 Image in computer: a giant grid of numbers ->the problem: Semantic Gap
 
 challenges: Viewpoint variation/ Illumination/ Deformation/ Occlusion/ Background Clutter/ Intraclass variation
@@ -46,7 +39,7 @@ An image classifier? Unable to write an algorithm.
 
 Maybe find edges, then find corners...
 
-##### Data-Driven Approach
+#### Data-Driven Approach
 
 1. Collect a dataset of images and labels
 2. Use ML to train a classifier
@@ -111,7 +104,7 @@ class NearestNeighbor:
 
 ### p5
 
-##### K-Nearest Neighbors
+#### K-Nearest Neighbors
 
 * Take **majority vote** from **K** closest points
 
@@ -157,8 +150,6 @@ for k in [1, 3, 5, 10, 20, 50, 100]:
   validation_accuracies.append((k, acc))
 ```
 
-
-
 Problems:
 
 * Vary slow at test time: we often care about the test time efficiency much more than the efficiency at training time
@@ -169,7 +160,7 @@ Problems:
 
 ### p6
 
-##### Linear Classification
+#### Linear Classification
 
 **Parametric Approach** :
 
@@ -187,7 +178,7 @@ Problems:
 
 ### p7
 
-**Loss function**
+#### **Loss function**
 
 * Quantify how good the model is
 
@@ -271,7 +262,7 @@ Problems:
   
 * suprvised learning
 
-**optimazation**
+#### **optimazation**
 
 * Convex optimazation: https://stanford.edu/~boyd/cvxbook/
 
@@ -358,7 +349,7 @@ Problems:
     weights += - step_size * weights_grad # perform parameter update
   ```
 
-Image Features:
+#### Image Features:
 
 * Using proper feature representation is much better than putting in raw pixels in to the classifier
 * Color histogram
@@ -368,7 +359,9 @@ Image Features:
 
 ### P8
 
-Computational graphs -> Back Propagation: recursively use of the chain rule
+#### Computational graphs
+
+* Back Propagation: recursively use of the chain rule
 
 * At each node, we just compute the local gradient and multiply it with receiving numerical values of gradients coming from upstream
 * We can group any nodes to make any complex nodes
@@ -405,6 +398,8 @@ for gate in reversed(self.graph.nodes_topologically_sorted()):
 
 ### P9
 
+#### Neural Network
+
 * Neural network is stacking some simple functions in a hierachical way in order to make up a more complex non-leaner fuction
 * $s=W_2max(0,W_1x)$
 * Non-linear layers are important: ReLU....  
@@ -415,9 +410,11 @@ for gate in reversed(self.graph.nodes_topologically_sorted()):
 
 ### P10
 
-History of CNN
+#### History of CNN
 
 ### P11
+
+#### Convolutional Neural Network
 
 * Convolution layer: preseve spatial structure
 
@@ -454,90 +451,89 @@ History of CNN
 
 ### P13
 
-* **Activation Functions**
+#### **Activation Functions**
 
-  * Sigmoid: 
+* Sigmoid: 
 
-    * $\sigma(x)=1/(1+e^x)$
-    * Squashes numbers to range [0,1]
-    * Can be interpreted as a saturating firing rate of a neuron
-    * Problems:
-      1. "kills" the gradients (when x is away from 0);
-      2.  its outputs are not zero-centered. When the input to a neuron is always positive,the gradients on $w$ are all positive or negative, causing inefficient gradients update
-      3. Exp() is compute expensive
+  * $\sigma(x)=1/(1+e^x)$
+  * Squashes numbers to range [0,1]
+  * Can be interpreted as a saturating firing rate of a neuron
+  * Problems:
+    1. "kills" the gradients (when x is away from 0);
+    2.  its outputs are not zero-centered. When the input to a neuron is always positive,the gradients on $w$ are all positive or negative, causing inefficient gradients update
+    3. Exp() is compute expensive
 
-  * Tanh(x)
+* Tanh(x)
 
-    * Squashes numbers to [-1,1]
-    * Tanh is a scaled sigmoid: $tanh(x)=2\sigma(2x)-1$ 
-    * Zero centered
-    * kills gradients when saturated
+  * Squashes numbers to [-1,1]
+  * Tanh is a scaled sigmoid: $tanh(x)=2\sigma(2x)-1$ 
+  * Zero centered
+  * kills gradients when saturated
 
-  * ReLU (Rectified Linear Unit) **BEST**!
+* ReLU (Rectified Linear Unit) **BEST**!
 
-    * $f(x)=max(0,x)$
-    * Don't saturate (in + region)
-    * Very computationally effiecieny
-    * Greatly accelerate the convergence of stochastic gradient descent compared to sigmoid/tanh in practice
-    * More biologically plausible than sigmoid
-    * Problems:
-      1. Not zero-centered output
-      2. Kills the gradients when x<=0: dead ReLU. So people like to initialize ReLU neurons with slightly positive biases.
-    * Be careful with the learning-rate!
+  * $f(x)=max(0,x)$
+  * Don't saturate (in + region)
+  * Very computationally effiecieny
+  * Greatly accelerate the convergence of stochastic gradient descent compared to sigmoid/tanh in practice
+  * More biologically plausible than sigmoid
+  * Problems:
+    1. Not zero-centered output
+    2. Kills the gradients when x<=0: dead ReLU. So people like to initialize ReLU neurons with slightly positive biases.
+  * Be careful with the learning-rate!
 
-  * Leaky ReLU (Good)
+* Leaky ReLU (Good)
 
-    * $f(x)=max(0.1x, x)$
+  * $f(x)=max(0.1x, x)$
 
-    * Will not die
+  * Will not die
 
-  * Parametric ReLU
+* Parametric ReLU
 
-    * $f(x)=max(\alpha x,x)$
-    * Backprop into $\alpha$
+  * $f(x)=max(\alpha x,x)$
+  * Backprop into $\alpha$
 
-  * ELU (Exponential Linear Units)
+* ELU (Exponential Linear Units)
 
-    * $f(x)= \left\{\begin{array}{lrc}x&if&x>0\\\alpha(exp(x)_1)&if&x\leq0\end{array}\right.$
+  * $f(x)= \left\{\begin{array}{lrc}x&if&x>0\\\alpha(exp(x)_1)&if&x\leq0\end{array}\right.$
+
 * All benefits of ReLU
     * Closer to zero mean outputs
     * Negative saturation regime compared with Leaky ReLU, adds some robustness to noise
-    
 * SELU (Scaled Exponential Linear Units)
-  * Maxout Neuron (Good)
+* Maxout Neuron (Good)
+  * $f=max(w_1^Tx+b_1,w_2^T+b_2)$
+  * Generalizes ReLU and Leaky ReLU
+  * Linear Regime: does not saturate or die
+  * Problem: double the number of parameters
 
-    * $f=max(w_1^Tx+b_1,w_2^T+b_2)$
-    * Generalizes ReLU and Leaky ReLU
-    * Linear Regime: does not saturate or die
-    * Problem: double the number of parameters
+#### Data Preprocessing
 
-* **Data Preprocessing**
+* **Zero-centered data**: ``X -= np.mean(x, axis = 0)``
 
-  * **Zero-centered data**: ``X -= np.mean(x, axis = 0)``
+  * Subtract the mean image: AlexNet
+  * Subtract per-channel mean: VGGNet
 
-    * Subtract the mean image: AlexNet
-    * Subtract per-channel mean: VGGNet
+* Normalized data: ``X /= np.std(X, axis = 0)``
 
-  * Normalized data: ``X /= np.std(X, axis = 0)``
+* Any preprocessing statistics (e.g. the data mean) must only be computed on the training data, and then applied to the validation / test data
 
-  * Any preprocessing statistics (e.g. the data mean) must only be computed on the training data, and then applied to the validation / test data
+* PCA and Whitening
 
-  * PCA and Whitening
-
-    * ```python
-      # Assume input data matrix X of size [N x D]
-      X -= np.mean(X, axis = 0) # zero-center the data (important)
-      cov = np.dot(X.T, X) / X.shape[0] # get the data covariance matrix
-      U,S,V = np.linalg.svd(cov) # SVD factorization
-      Xrot = np.dot(X, U) # decorrelate the data
-      """
-      Using PCA: 
-      Xrot_reduced = np.dot(X, U[:,:100]) # Xrot_reduced becomes [N x 100]
-      """
-      # whiten the data:
-      # divide by the eigenvalues (which are square roots of the singular values)
-      Xwhite = Xrot / np.sqrt(S + 1e-5)
-      ```
+  * ```python
+    # Assume input data matrix X of size [N x D]
+    X -= np.mean(X, axis = 0) # zero-center the data (important)
+    cov = np.dot(X.T, X) / X.shape[0] # get the data covariance matrix
+    U,S,V = np.linalg.svd(cov) # SVD factorization
+    Xrot = np.dot(X, U) # decorrelate the data
+    """
+    Using PCA: 
+    Xrot_reduced = np.dot(X, U[:,:100]) # Xrot_reduced becomes [N x 100]
+    """
+    # whiten the data:
+    # divide by the eigenvalues (which are square roots of the singular values)
+    Xwhite = Xrot / np.sqrt(S + 1e-5)
+    ```
 
 * **Weight Initialization**
   * If we initialize all weights using the same value, their gradients will be all same and act the same (no symmetry breaking)
@@ -551,9 +547,10 @@ History of CNN
 
 ### P14
 
-* **Batch Normalization**
+#### **Batch Normalization**
 
-  * Forcing the inputs to be unit Gaussian 
+* Forcing the inputs to be unit Gaussian 
+
 * Compute the empirical mean and variance (for each mini-batch) independently for each dimension (element-wise)
   * Normalization: $\hat{x}^{(k)}=\frac{x^{(k)}-E[x^{(k)}]}{\sqrt{Var[x^{(k)}]}}$
   * Scaling and shifting: $\hat{y}=\gamma ^{(k)}\hat{x}^{(k)}+\beta ^{(k)}$ ,the network can learn:$\gamma ^{(k)}=\sqrt{Var[x^{(k)}]}\ \ \ \  \beta^{(k)}=E[x^{(k)}]$
@@ -565,21 +562,22 @@ History of CNN
     * Reduces the strong dependence on initialization
     * Acts as a form of regularization
 
-* **Babysitting the Learning Process**
+#### **Babysitting the Learning Process**
 
-  * Preprocess the data
+* Preprocess the data
 
-  * Choose the architecture
+* Choose the architecture
 
-  * Before optimization:
+* Before optimization:
 
-    * **Look for correct loss at chance performance.** Make sure you’re getting the loss you expect when you initialize with small parameters. It’s best to first check the data loss alone (so set regularization strength to zero)
-    * As a second sanity check, increasing the regularization strength should increase the loss
-    * **Overfit a tiny subset of data**. Lastly and most importantly, before training on the full dataset try to train on a tiny portion (e.g. 20 examples) of your data and make sure you can achieve zero cost. For this experiment it’s also best to set regularization to zero, otherwise this can prevent you from getting zero cost
+  * **Look for correct loss at chance performance.** Make sure you’re getting the loss you expect when you initialize with small parameters. It’s best to first check the data loss alone (so set regularization strength to zero)
+  * As a second sanity check, increasing the regularization strength should increase the loss
+  * **Overfit a tiny subset of data**. Lastly and most importantly, before training on the full dataset try to train on a tiny portion (e.g. 20 examples) of your data and make sure you can achieve zero cost. For this experiment it’s also best to set regularization to zero, otherwise this can prevent you from getting zero cost
 
-  * Start training
+* Start training
 
-    * quantities that should be monitored: loss, train/val accuracy, ratio of the update magnitudes, the first-layer weights in ConvNets
+  * quantities that should be monitored: loss, train/val accuracy, ratio of the update magnitudes, the first-layer weights in ConvNets
+
 * Start with small regularization and find learning rate that makes the loss go down: [1e-3, 1e-5]
     * If the loss not going down, that means the learning rate is too low; if the loss is NaN, that means a high learning rate
     * If there is a big gap between training accuracy and validation accuracy, that means overfitting (increase regularization or get more data); if there is no gap, that means you can increase your model capacity
@@ -615,6 +613,8 @@ History of CNN
   * Track the ratio of weight updates / weight magnitudes: around 0.001
 
 ### P15
+
+#### Optimization
 
 * Problems of SGD:
   *  The maximum ratio between the largest and the smallest gradient can be quite large, especially in high-dimensional problems, causing zig-zag path in SGD
@@ -722,7 +722,7 @@ History of CNN
 
 ### P16
 
-Regularization
+#### Regularization
 
 * L1, L2, Maxnorm
 
@@ -810,7 +810,7 @@ Regularization
 
 ### P17
 
-Transfer Learninhg
+#### Transfer Learning
 
 * One reason of overfitting is there is not enough data
 
@@ -821,13 +821,15 @@ Transfer Learninhg
 
 ### P18
 
-GPU
+#### Hardware and software 
+
+##### GPU
 
 * Compared to CPU: more cores, but each core is much slower, and good at doing parallel tasks: Matrix multiplication
 * CUDA
 * Streaming multiprocessors: FP32 cores, Tensor Core (4x4 matrix)
 
-Pytorch
+##### Pytorch
 
 * Tensor
 
@@ -936,7 +938,7 @@ Pytorch
   * nn.DataParallel
   * nn.DistributedDataParallel
 
-TensorFlow
+##### TensorFlow
 
 * TF 1.0 (Static Graphs)
   * Define computational graph
@@ -946,6 +948,8 @@ TensorFlow
 * Keras
 
 ### P19
+
+#### Net Architecture
 
 * Some indexes:
 
@@ -963,18 +967,18 @@ TensorFlow
 
     ​	= (C' * H' * W') * (C * H * W)
 
-AlexNet (2012) 
+##### AlexNet (2012) 
 
 * Model split over two GPUs
 * Most of the memory usage is in the early convolution layers
 * Nearly all of parameters are in the fc layers
 * Most floating-point ops occurs in the convolution layers
 
-ZFNet (2013)
+##### ZFNet (2013)
 
 * Both the architecture of AlexNet and ZFNet are set by trials and errors (hand-design)
 
-VGG (2014)
+##### VGG (2014)
 
 * VGG Design rules:
   * All conv are 3x3 stride 1 pad 1
@@ -990,7 +994,7 @@ VGG (2014)
 * Two 3x3 conv has same receptive field as a single 5x5 conv, but has fewer parameters and takes less computation. Plus, two 3x3 conv can have more non-linearity by inserting ReLU
 * Conv layers at each spatial resolution take the same amount of computation by doubling channels and halfing its spatial resolution
 
-GoogLeNet (2014)
+##### GoogLeNet (2014)
 
 * Innovations for efficiency
 * Stem network at the start aggressively downsamples input
@@ -1003,7 +1007,7 @@ GoogLeNet (2014)
 
 * Auxiliary Classifiers: no longer need to use this after BN
 
-ResNet (2015)
+##### ResNet (2015)
 
 * Problem: Deeper networks perform worse than the shallow one
 * Hypothesis: deeper networks are harder to optimize, and don't learn identity functions to emulate shallow models
@@ -1021,7 +1025,9 @@ ResNet (2015)
 * Uses Globle Average Pooling
 * Improving ResNets: ResNeXt (group comvolution)
 
-Module Ensembles (2016)
+##### Module Ensembles (2016)
+
+##### Others 
 
 SENet (2017)
 
@@ -1036,17 +1042,15 @@ Neural Architecture Search
 ### RNN: Process Sequences
 
 * RNN on both sequntial and non-sequential data
-
 * RNNs have an internal state that is updated as a sequence is processed
-
-*  $h_t=f_W(h_{t-1},x_t)$
-  
+* $h_t=f_W(h_{t-1},x_t)$
 * Sharing weights: using the same weight matrix W at every timestamp
-  
-* Vanilla RNN
-  * $h_t=tanh(W_{hh}h_{t-1}+W_{xh}x_t)=tanh(W(\substack{h_{t-1}\\x_t}))$
-  * $y_t=W_{hy}h_t$
-  * $h_0$ is either set to all 0, or learn it
+
+#### Vanilla RNN
+
+* $h_t=tanh(W_{hh}h_{t-1}+W_{xh}x_t)=tanh(W(\substack{h_{t-1}\\x_t}))$
+* $y_t=W_{hy}h_t$
+* $h_0$ is either set to all 0, or learn it
 
 * Language Modeling
   * Encode inputs as one-hot-vector
@@ -1074,16 +1078,16 @@ Neural Architecture Search
 
   *  Vanishing Gradients: change RNN architecture
 
-* LSTM
-  
-  * $\left(\substack{i\\f\\o\\g}\right)=\left(\substack{\sigma\\\sigma\\\sigma\\tanh}\right)(W\left(\substack{h_{t-1}\\x_t}\right)+b_h)$
-  
-  * $c_t=f\odot c_{t-1}+i\odot g$
-  
-    $h_t=o\odot tanh(c_t)$
-  
-  * i: input gate, whether to write to cell
-  
+#### LSTM
+
+* $\left(\substack{i\\f\\o\\g}\right)=\left(\substack{\sigma\\\sigma\\\sigma\\tanh}\right)(W\left(\substack{h_{t-1}\\x_t}\right)+b_h)$
+
+* $c_t=f\odot c_{t-1}+i\odot g$
+
+  $h_t=o\odot tanh(c_t)$
+
+* i: input gate, whether to write to cell
+
 * f: forget gate, whether to erase cell
   
   * o: output gate, how much to reveal cell
@@ -1097,69 +1101,70 @@ Neural Architecture Search
     * Add through the f, i, g, o gates: better balancing of gradient values
     * LSTM makes it easier tfor RNN to preserve information over many time steps (if f = 1, i = 0, then the information of that cell is preserved indefinitely)
     * LSTM doesn't guarantee that there is no vanishing/exploding gradient, but it does provide an easier way for the model to learn long-distance dependencies
-  
-* Multilayer RNNs
 
-* Gated Recurent Unit (GRU)
+Multilayer RNNs
 
-* Sequence to Sequence: 
-  * Many to one (Encoder) : $h_t=f_W(x_t,h_{t-1})$
-    * Initial decoder state $s_0$
-    * Context vector $c$ (often $c=h_t$)
-  * One to many (Decoder): $s_t=g_U(y_{t-1},h_{t-1},c)$
-  * Input sequence bottlenecked through fixed-sized vector
+Gated Recurent Unit (GRU)
 
-  #### Attention
-  
-  * Alignment scores: $e_{t,i}=f_{att}(s_{t-1},h_i)$      ($f_{att}$ is an MLP)
-  * normalize alignment scores to get attention weights (using Softmax) : $\sum_ia_{t,i}=1, 0<a_{t,i}<1$
-  * Compute context vector as linear combination of hidden states: $c_t=\sum_ia_{t,i}h_i$
-  * Use context vector on decoders: $s_t=g_U(y_{t-1},c_t,s_{t-1})$
-  * Image captioning with RNNs and Attention: Each tilmestep of decoder uses a different context vector that looks at different parts of the input image
-  * The decoder doesn't use the fact that $h_i$ form an ordered sequence - it just treats them as an unordered set $\{h_i\}$
-  * X, Attend, and Y: Show, attend, and tell/read
-  * Attention Layer:
-    * Inputs:
-      1. Query vector: $Q$  (Shape: $N_Q \times D_Q$) (Multiple query vectors)
-      2. Input vectors: $X$ (Shape: $N_X\times D_X$)
-      3. Similarity function: scaled dot product instead of $f_{att}$ (large similarities will cause softmax to saturate and give vanishing gradients)
-    * Computation:
-      1. Similarities: $E=QX^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot X_j/sqrt(D_Q)$
-      2. Attention weights: $A=softmax(E, dim=1)$ (Shape: $N_Q\times N_X$)
-      3. Output vector: $Y=AX$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}X_j$
-    * Changes: Separate key and value
-      - Key matrix: $W_K$ (Shape: $D_X\times D_Q$)
-      - Value matrix: $W_V$ (Shape: $D_X \times D_V$)
-      - Key vectors: $K=XW_K$ (Shape: $N_X\times D_Q$)
-      - Value vectors: $V=XW_V$ (Shape: $N_X\times D_V$)
-      - Similarities: $E=QK^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot K_j/sqrt(D_Q)$
-      - Output vector: $Y=AV$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}V_j$
-  * Self-Attention Layer:
-    * one query per input vector
-    * Inputs:
-      1. Input vectors: $X$ (Shape: $N_X\times D_X$)
-      2. Key matrix: $W_K$ (Shape: $D_X\times D_Q$)
-      3. Value matrix: $W_V$ (Shape: $D_X \times D_V$)
-      4. Query matrix: $W_Q$  (Shape: $D_X \times D_Q$) 
-    * Computation:
-      1. Query vectors: $Q=XW_Q$
-      2. Key vectors: $K=XW_K$ (Shape: $N_X\times D_Q$)
-      3. Value vectors: $V=XW_V$ (Shape: $N_X\times D_V$)
-      4. Similarities: $E=QK^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot K_j/sqrt(D_Q)$
-      5. Attention weights: $A=softmax(E, dim=1)$ (Shape: $N_Q\times N_X$)
-      6. Output vector: $Y=AV$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}V_j$
-    * Self-Attention layer is Permutation Equivariant $f(s(x))=s(f(x))$
-    * Self-Attention layer works on sets of vectors, compared with each others, and output sets of vectors (does not care about the order if the vector it is processing) 
-    * In order to make processing position-aware, concatenate input with positional encoding
-  * Masked Self-Attention Layer:
-    * Don't let vectors look ahead in the sequence
-    * Language modeling (predict next word)
-    * setting $E_{i,j}$ to -inf, where $i>j$
-  * Multihead Self-Attention Layer:
-    * use $H$ independent Attention Heads in parallel
-    * Hyperparameters: Query dimension $D_Q$, Number of heads $H$
-  * "Self-Attention Generative Adversarial Networks"
-  
+#### Sequence to Sequence: 
+
+* Many to one (Encoder) : $h_t=f_W(x_t,h_{t-1})$
+  * Initial decoder state $s_0$
+  * Context vector $c$ (often $c=h_t$)
+* One to many (Decoder): $s_t=g_U(y_{t-1},h_{t-1},c)$
+* Input sequence bottlenecked through fixed-sized vector
+
+#### Attention
+
+* Alignment scores: $e_{t,i}=f_{att}(s_{t-1},h_i)$      ($f_{att}$ is an MLP)
+* normalize alignment scores to get attention weights (using Softmax) : $\sum_ia_{t,i}=1, 0<a_{t,i}<1$
+* Compute context vector as linear combination of hidden states: $c_t=\sum_ia_{t,i}h_i$
+* Use context vector on decoders: $s_t=g_U(y_{t-1},c_t,s_{t-1})$
+* Image captioning with RNNs and Attention: Each tilmestep of decoder uses a different context vector that looks at different parts of the input image
+* The decoder doesn't use the fact that $h_i$ form an ordered sequence - it just treats them as an unordered set $\{h_i\}$
+* X, Attend, and Y: Show, attend, and tell/read
+* Attention Layer:
+  * Inputs:
+    1. Query vector: $Q$  (Shape: $N_Q \times D_Q$) (Multiple query vectors)
+    2. Input vectors: $X$ (Shape: $N_X\times D_X$)
+    3. Similarity function: scaled dot product instead of $f_{att}$ (large similarities will cause softmax to saturate and give vanishing gradients)
+  * Computation:
+    1. Similarities: $E=QX^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot X_j/sqrt(D_Q)$
+    2. Attention weights: $A=softmax(E, dim=1)$ (Shape: $N_Q\times N_X$)
+    3. Output vector: $Y=AX$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}X_j$
+  * Changes: Separate key and value
+    - Key matrix: $W_K$ (Shape: $D_X\times D_Q$)
+    - Value matrix: $W_V$ (Shape: $D_X \times D_V$)
+    - Key vectors: $K=XW_K$ (Shape: $N_X\times D_Q$)
+    - Value vectors: $V=XW_V$ (Shape: $N_X\times D_V$)
+    - Similarities: $E=QK^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot K_j/sqrt(D_Q)$
+    - Output vector: $Y=AV$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}V_j$
+* Self-Attention Layer:
+  * one query per input vector
+  * Inputs:
+    1. Input vectors: $X$ (Shape: $N_X\times D_X$)
+    2. Key matrix: $W_K$ (Shape: $D_X\times D_Q$)
+    3. Value matrix: $W_V$ (Shape: $D_X \times D_V$)
+    4. Query matrix: $W_Q$  (Shape: $D_X \times D_Q$) 
+  * Computation:
+    1. Query vectors: $Q=XW_Q$
+    2. Key vectors: $K=XW_K$ (Shape: $N_X\times D_Q$)
+    3. Value vectors: $V=XW_V$ (Shape: $N_X\times D_V$)
+    4. Similarities: $E=QK^T$ (Shape: $N_Q\times N_X$) $E_{i,j}=Q_i\cdot K_j/sqrt(D_Q)$
+    5. Attention weights: $A=softmax(E, dim=1)$ (Shape: $N_Q\times N_X$)
+    6. Output vector: $Y=AV$ (Shape: $N_Q\times D_X$) $Y_i=\sum_jA_{i,j}V_j$
+  * Self-Attention layer is Permutation Equivariant $f(s(x))=s(f(x))$
+  * Self-Attention layer works on sets of vectors, compared with each others, and output sets of vectors (does not care about the order if the vector it is processing) 
+  * In order to make processing position-aware, concatenate input with positional encoding
+* Masked Self-Attention Layer:
+  * Don't let vectors look ahead in the sequence
+  * Language modeling (predict next word)
+  * setting $E_{i,j}$ to -inf, where $i>j$
+* Multihead Self-Attention Layer:
+  * use $H$ independent Attention Heads in parallel
+  * Hyperparameters: Query dimension $D_Q$, Number of heads $H$
+* "Self-Attention Generative Adversarial Networks"
+
 * Three Ways of Processing Sequences
   1. RNN
      * Works on Ordered Sequences
@@ -1174,7 +1179,6 @@ Neural Architecture Search
      * Good at long sequences: after one self-attention layer, each output sees all inputs
      * Highly parallel: each output can be computed in parallel
      * Very memory intensive
-
 * The Transformer
   * "Attention is all you need"
   * Transformer Block: 
@@ -1297,8 +1301,9 @@ Neural Architecture Search
 ##### Fast R-CNN
 
 * Add backbone network before region proposals
-* Cropping Features: RoI Pool / RoI Align (bilinear interpolation)
+* Cropping and resizing features: RoI Pool / RoI Align (bilinear interpolation)
   * Must be differentiable for backprop
+* Per-Reign Network is relatively lightweight 
 * Problem: Runtime dominated by region proposals
 
 ##### Faster R-CNN
@@ -1309,12 +1314,15 @@ Neural Architecture Search
   * For positive boxes, also predict a box transform to regress from anchor box to object box
   * Problem: anchor box may have the wrong size / shape
   * Solution: use K different anchor boxes at each point
+  
 * Jointly train with 4 losses:
   * RPN classification
   * RPN regression
   * Object classification
   * Object regression
+  
 * Ignore overlapping proposals with non-max suppression
+
 * Two-stage object detector
   * First stage: Run once per image
     * Backbone network
@@ -1323,8 +1331,13 @@ Neural Architecture Search
     * Crop features: RoI pool / align
     * Predict object class
     * Predict Bbox offset
+  
 * Single-stage object dection
+  
+  * Classify each object as one of C categories or background
+  
   * YOLO / SSD / RetinaNet
+  
 * Feature Pyramid Networks
 
 ### Segmentation
@@ -1356,40 +1369,55 @@ Mask R-CNN
 
 ### 3D Vision
 
-3D Shape Representations
+#### 3D Shape Representations
 
-* Depth Map:
-  * RGB image + Depth image = RGB-D image (2.5D)
-  * Predicting Depth Maps using FCN
-    * Fatal problem in 3D vision: scale / depth ambiguity
-    * scale invariant loss
-* Surface Normals
-  * For each pixel, surface normals give a vector giving the normal vector to the object in the world for that pixel
-  * Predicting Normals
-* Voxel Grid
-  * Need high spatial resolution to capture fine structures
-  * Processing Voxels input: 3D Convolution
-  * Generating Voxel Shapes
-    * 3D Convolution
-    * Voxel Tubes
-  * Voxel problems: computational expensive and large memory usage
-  * Oct-Trees, Nested Shape Layers
-* Implicit Surface
-  * Learn a function to classify arbitrary 3D points as inside / outside the shape: $R^3\rightarrow\{0,1\}$
-  * The surface of the 3D object is the level set $\{x:o(x)=0.5\}$
-  * signed distance function
-* Point Cloud
-  * Processing Pointcloud Inputs: PointNet
-  * Generatong Pointcloud Outputs
-    * Predicting Point Clouds: Loss Function: Chamfer distance
-* Triangle Mesh
-  * Predicting Meshes: Pixel2Mesh
-    * Iterative mesh refinement
-    * Graph Convolution: $f'_i=W_0f_i+\sum_{j\in N(i)}W_1f_j$
-    * Vertex-Aligned Features
-    * Loss Function: Chamfer distance between predicted samples and ground-truth samples
+##### Depth Map:
 
-Shape Comparison Metrics
+* For each pixel, depth map gives distance from the carema to the objec in the world at that pixel
+
+* RGB image + Depth image = RGB-D image (2.5D)
+* Predicting Depth Maps using FCN
+  * Fatal problem in 3D vision: scale / depth ambiguity
+  * scale invariant loss
+
+##### Surface Normals
+
+* For each pixel, surface normals give a vector giving the normal vector to the object in the world for that pixel
+* Predicting Normals
+* Per-pixel Loss: $(x\cdot y)/(|x|\ |y|)$
+
+##### Voxel Grid
+
+* Need high spatial resolution to capture fine structures
+* Processing Voxels input: 3D Convolution
+* Generating Voxel Shapes
+  * 3D Convolution
+  * Voxel Tubes
+* Voxel problems: computational expensive and large memory usage
+* Oct-Trees, Nested Shape Layers
+
+##### Implicit Surface
+
+* Learn a function to classify arbitrary 3D points as inside / outside the shape: $R^3\rightarrow\{0,1\}$
+* The surface of the 3D object is the level set $\{x:o(x)=0.5\}$
+* signed distance function
+
+##### Point Cloud
+
+* Processing Pointcloud Inputs: PointNet
+* Order of points doesn't matter (set)
+* Generatong Pointcloud Outputs
+  * Predicting Point Clouds: Loss Function: Chamfer distance
+
+##### Triangle Mesh
+
+* Predicting Meshes: Pixel2Mesh
+  * Iterative mesh refinement
+  * Graph Convolution: $f'_i=W_0f_i+\sum_{j\in N(i)}W_1f_j$
+  * Vertex-Aligned Features
+  * Loss Function: Chamfer distance between predicted samples and ground-truth samples
+
+#### Shape Comparison Metrics
 
 * Voxel IoU
 * Chamfer Distance
@@ -1397,74 +1425,150 @@ Shape Comparison Metrics
   * Precision@t = fraction of predicted points within t of some ground-truth point
   * Recall@t = fraction of ground-truth points with t of some predicted point
   * F1@t = $2*\frac{precision@t*Recall@t}{Precision@t+Recall@t}$
+  * Robust to outliers
 
-Cameras 
+#### Camera Systems
 
 * Canonical Coordinates vs View Coordinates
 
-Datasets
+#### Datasets
 
-* ShapeNet
-* Pix3D
+* ShapeNet: 3D CAD models
+* Pix3D: 3D models of IKEA furniture
+
+#### 3D Shape Prediction
 
 Mesh R-CNN
 
 * Input image -> 2D object recognition -> 3D object voxels -> 3D object meshes
-* L2 regularization
+* Chamber Loss + L2 regularization
 
 ### Video
 
-* 4D tensor : T x 3 x H x W
+#### Dataset
 
-* Problem: raw videos are big
+* Video Classification: UCF101, Sports-1M, YouTubw 8M
+* Atomic Actions: Charades, Atomic Visual Actions (AVA), Moments in Time (MIT)
+* Video Retrival (Movie Querying): M-VAD, MPII-MD, LSMDC
 
-* Solution: 
-  * Train on short clips: low fps and low spatial resolution
-  * Run model on different clips, average predictions
+#### Challenges
 
-Video classification
+* Computaionally expensive (size of video >> image datasets, redundancy in adjacent frames)
+* Lower quality (Resolution, motion blur, occlusion)
+* Requires a lot of training data
 
-* Single-Frame CNN: tarin normal 2D CNN to classify video frame independently
-* Late Fusion (with FC layers)
-  * Intuition: Get high-level appearance of each frame, and combine them
-  * Run 2D CNN on each frame, concatenate features and feed to MLP
-* Late Fusion (with pooling)
-  * Intuition: Get high-level appearance of each frame, and combine them
-  * Run 2D CNN on each frame, pool features and feed to Linear
-  * Problem: hard to compare low-level motion between frames
-* Early Fusion
-  * Intuition: Compare frames with vary first Conv Layer, after that normal 2D CNN
-  * Reshape: 3T x H x W
-  * First Conv Layer: D x H x W
-  * Problem: one layer of temporal processing may not be enough
-* Slow Fusion (3D CNN)
-  * Intuition: Use 3D convolution and pooling to slowly fuse temporal information over the course of the network
-  * Build slowly in space and time
-  * Temporal shift-invariant since each filter slides over time
-  * C3D: The VGG of 3D CNNs
+#### Video framework
+
+* Sequence modeling
+* Temporal reasoning (receptive filed)
+* Focus on action recognition (representative task for video understanding)
+
+#### Pre-Deep Learning
+
+Features:
+
+* Local features (hand-crafted): HOF + HOF
+* Trajectory-based:
+  * Motion Boundary Histogram (MBH)
+  * (impoved) dense trajectories: good performance, but computationally intensive 
+
+Ways to aggregate features:
+
+* Bag of Visual Words
+* Fisher vectors
 
 Measuring Motion: Optical Flow
 
+* Highlights local motion
+
 * give a displacement field F between images $I_t$ and $I_{t+1}$ : $F(x,y)=(dx,dy)$
-* Two-stream network
+* Trajectory stacking
 
-Modeling long-term temporal structure:
+#### Deep Learning
 
-* process local features using RNN
+##### Main models:
+
+* CNN + RNN: video understanding as sequence modeling
+* 3D Convolution: embed temporal dimension to CNN
+* Two-stream networks: explicit model of motion
+
+Problem: raw videos are big
+
+Solution: 
+
+* Train on short clips: low fps and low spatial resolution
+* Run model on different clips, average predictions
+
+##### Single-Frame CNN
+
+* Train normal 2D CNN to classify video frames independently
+* Average prediction at test-time
+* Strong baseline for video classification
+
+##### Late Fusion (with FC layers)
+
+* Intuition: Get high-level appearance of each frame, and combine them
+* Run 2D CNN on each frame, concatenate features and feed to MLP
+
+##### Late Fusion (with pooling)
+
+* Intuition: Get high-level appearance of each frame, and combine them
+* Run 2D CNN on each frame, pool features and feed to Linear
+* Problem: hard to compare low-level motion between frames
+
+##### Early Fusion
+
+* Intuition: Compare frames with vary first Conv Layer, after that normal 2D CNN
+* Input: T x 3 x H x W
+* Reshape: 3T x H x W
+* First Conv Layer: D x H x W (collapse all temporal information)
+* Problem: 
+  * One layer of temporal processing may not be enough
+  * No temporal shift-invariance -> needs to learn separate filters for the same motion at different times in the clip
+
+##### Slow Fusion (3D CNN)
+
+* Intuition: Use 3D convolution and pooling to slowly fuse temporal information over the course of the network
+* Build slowly in space and time
+* Temporal shift-invariant since each filter slides over time
+* C3D: The VGG of 3D CNNs
+* I3D: Inflating 2D networks to 3D
+  * Input: 2D conv / pool kernel $K_h\times K_w$
+  * Output: 3D conv / pool kernel $K_t\times K_h\times K_w$ by copying $K_t$ times in space and divide by $K_t$
+
+##### Two stream
+
+* Video = Appearance + Motion (Complementary)
+* Separate motion (multi-frame -> optical flow) from static appearance (single frame)
+* Motion: external + camera -> mean subtraction to compensate camera motion
+* Problem:
+  * The appearance and motion are not aligned -> spatial fusion
+  * Lacking modeling of temporal evolution -> temporal fusion
+
+##### CNN + RNN
+
+Modeling long-term temporal structure
+
+* Extract feature with CNN (2D or 3D) : 
+  * Each value a function of a fixed temporal window (local temporal strcuture)
+
+* process local features using RNN (LSTM)
+  * Each vector is a function of all previous vectors (global temporal structure)
 * Sometimes don't backdrop to CNN to save memory, pretrain and use CNN as a feature extractor
 * Multi-layer RNN
   * Features from layer $L$, timestep $t-1$
   * Features from layer $L-1$, timestep $t$
-* Self-attention
-  * Interpret as a set of THW vectors of dim C
-  * Spatio-Temporal Self-Attention (Nonlocal block)
-  * Trick: initialize last conv to 0, then entire block computes identity, so the nonlocal block can be inserted into existing 3D CNNs
+  * Use different weights at each layer, share weights across time
+* Recurrent CNN: replace dot product in RNN with convolution
 
-* Inflating 2D networks to 3D
-  * Input: 2D conv / pool kernel $K_h\times K_w$
-  * Output: 3D conv / pool kernel $K_t\times K_h\times K_w$ by copying $K_t$ times in space and divide by $K_t$
+##### Spatio-Temporal Self-Attention (Nonlocal block)
 
-* Treating time and space differently: SlowFast Networks
+* Interpret as a set of THW vectors of dim C
+* Trick: initialize last conv to 0, then entire block computes identity, so the nonlocal block can be inserted into existing 3D CNNs
+
+##### SlowFast Network
+
+* Treating time and space differently
 
 ### Generative Models
 
@@ -1474,7 +1578,7 @@ Modeling long-term temporal structure:
 
 * Unsupervised learning: learn some underlying hidden  structure of the data (clustering, dimensionality reduction, feature learning, density estimation)
 
-Discriminative vs Generative Models
+#### Discriminative vs Generative Models
 
 * Discriminative Model: 
   * Learn a probability distribution $p(y|x)$
@@ -1498,7 +1602,7 @@ Discriminative vs Generative Models
     * Assign labels, while rejecting outliers
     * Generate new data conditioned on input labels
 
-Generative Modeling
+#### Generative Modeling
 
 * Given training data, generate new sample from same distribution
 * Formulate as density estimation problems:
@@ -1582,7 +1686,7 @@ Generative Modeling
 
 ### Reinforcement Learning
 
-Environment and Agent
+#### Environment and Agent
 
 * The agent sees a **state**; may be noisy or incomplete
 * The agent makes an **action** based on what it sees
@@ -1590,14 +1694,14 @@ Environment and Agent
 * Action causes change to environment
 * Agent updates
 
-Reinforcement Learning vs Supervised Learning
+#### Reinforcement Learning vs Supervised Learning
 
 * Stochasticity: Rewards and state transitions maybe random
 * Credit assignment: Reward $r_t$ may not directly depend on action $a_t$
 * Nondifferentiable: Can't backprop through world; can't compute $dr_t/da_t$ 
 * Nonstationary: What the agent experiences depends on how it acts
 
-Markov Decision Process (MDP)
+##### Markov Decision Process (MDP)
 
 * A tuple $(S,A,R,P,\gamma)$
   * $S$ : Set of possible states
@@ -1605,9 +1709,9 @@ Markov Decision Process (MDP)
   * $R$ : Distribution of reward given (state, action) pair
   * $P$ : Transition probability: distribution over next state given (state, action)
   * $\gamma$ : Discount factor (tradeoff between future and present rewards)
-* Agent executes a policy $\pi$ giving distribution of actions conditioned on states
-* Goal: Find policy $\pi$ that maximize cumulative discounted rewards: $\sum_t\gamma ^tr_t$
-* Traing process
+* Agent executes a policy $\pi$ giving distribution of actions conditioned on states (a function from S to A that specifies what action to take in each state)
+* Objective: Find policy $\pi^*$ that maximize cumulative discounted rewards: $\sum_t\gamma ^tr_t$
+* Training process
   * At time step t = 0, environment samples initial state $s_0\sim p(s_0)$
   * Then, for f = 0 until done:
     * Agent selects action $a_t\sim \pi(a|s_t)$
@@ -1618,41 +1722,43 @@ Markov Decision Process (MDP)
 * Problem: Lots of randomness
 * Solution: Maximize the expected sum of rewards $\pi^*=arg\ max_\pi E[\sum_{t\geq0}\gamma^tr_t|\pi]$
 
-Value Function and Q Function
+* Value Function and Q Function
+  * Value Function: $V^\pi(s)=E[\sum_{t\geq0}\gamma^tr_t|s_0=s,\pi]$
+  * Q Function: $Q^\pi(s,a)=E[\sum_{t\geq0}\gamma^tr_t|s_0=s,a_0=a,\pi]$
 
-* Value Function: $V^\pi(s)=E[\sum_{t\geq0}\gamma^tr_t|s_0=s,\pi]$
-* Q Function: $Q^\pi(s,a)=E[\sum_{t\geq0}\gamma^tr_t|s_0=s,a_0=a,\pi]$
+#### Q-learning
 
-Bellman Equation
+##### Bellman Equation
 
 * Optimal Q-function: $Q^*(s,a)=max_\pi E[\sum_{t\geq0}\gamma^tr_t|s_0=s,a_0=a,\pi]$
 * $Q^*$ Encodes the optimal policy: $\pi^*(s)=arg \ max_{a'}Q(s,a')$
 * Bellman Equation: $Q^*(s,a)=E_{r,s'}[r+\gamma max_{a'}Q^*(s',a')]$ , where $r\sim R(s,a), s'\sim P(s,a)$
 
-Value Iteration
+##### Value Iteration
 
 * If we find a function $Q(s,a)$ that satisfies the Bellman Equation, then it must be $Q^*$
 * Start with a random Q, and use the Bellman Equation as an update rule:
   * $Q_{i+1}(s,a)=E_{r,s'}[r+\gamma max_{a'}Q^*(s',a')]$ , where $r\sim R(s,a), s'\sim P(s,a)$
-
 * $Q_i$ converges to $Q^*$ as $i\rightarrow\infty$
+* Problem: Not scalable. Must compute $Q(s,a)$ for every state-action pair
+* Solution: Use a function approximator to estimate $Q(s,a)$ -> neural network
 
-Deep Q-Learning
+##### Deep Q-Learning
 
 * train a neural network (with weights $\theta$) to approximate $Q^*$ : $Q^*(s,a)\approx Q(s,a;\theta)$
 * $y_{s,a,\theta}=E_{r,s'}[r+\gamma max_{a'}Q^*(s',a';\theta)]$ , where $r\sim R(s,a), s'\sim P(s,a)$
 * Loss for training $Q$ : $L(s,a)=(Q(s,a;\theta)-y_{s,a;\theta})^2$
 
-Policy Gradient
+##### Policy Gradient
 
 * Train a network $\pi_\theta(a|s)$ that takes state as input, gives distribution over which action to take in that state
 * objective function: $J(\theta)=E_{r\sim p_\theta}[\sum_{t\geq0}\gamma^tr_t]$
 * Find the optimal policy by maximizing $\theta^*=arg\ max_\theta J(\theta)$ (using gradient ascent)
-* Problem: Nondifferentiability
-
+* Problem: Nondifferentiability and suffer from high variance so requires a lot of samples
 * $\frac{\partial J}{\partial \theta}=E_{x\sim p_\theta}[\sum_{t\geq 0}\frac{\partial}{\partial \theta}log\pi_\theta(a_t|s_t)]$
+* SOTA: Proximal Policy Optimization
 
-Actor-Critic, Model-Based, Imitation Learning, Inverse Reinforcement Learning, Adveisarial Learning, Stochastic Computation Graphs
+(Soft) Actor-Critic, Model-Based, Imitation Learning, Inverse Reinforcement Learning, Adveisarial Learning, Stochastic Computation Graphs
 
 ### Recap
 
