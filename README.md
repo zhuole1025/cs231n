@@ -4,7 +4,7 @@ Here is my version of **notes & assignments** for [cs231n-2020](http://cs231n.st
 
 ### 3/16 Updates
 
-I uploaded related papers mentioned in cs231n~
+I uploaded [related papers](https://drive.google.com/drive/folders/1hc_1oSvosvvpjeG21ErkBzDInwA5GEjv?usp=sharing) mentioned in cs231n~
 
 ### Experience 
 
