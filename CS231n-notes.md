@@ -214,6 +214,7 @@ Problems:
   * Model should be simple, no over-fitting(not just fitting the training data): the more complex the model is, the greater the penalty is
   * Occam's razor
   * $\lambda$ is an important hyperparameter: regularization strength
+  * When combining with gradient descent, it becomes **Weight Decay**
   * Why regularize?
     * Express preferences over weights
     * Make the model simple so it works on test data
@@ -225,7 +226,6 @@ Problems:
     * **L1 regularization**: $R(W) = \sum_k\sum _l |W_{k,l}|$  
       * encouraging sparsity in the matrix W
     * Elastic net(L1 + L2): $R(W) = \sum_k\sum _l \beta W_{k,l}^2+ |W_{k,l}|$
-    * ...
   
 * **Softmax Classifier** (Multinomial Logistic Regression) 
   
@@ -542,7 +542,7 @@ for gate in reversed(self.graph.nodes_topologically_sorted()):
   * Initialization just right: Nice distribution of activations at all layers, Learning proceeds nicely
   * Small random numbers (but does not fit for deep network)
   * Xavier initialization: ``W = np.random.randn(Din, Dout) / np.sqrt(Din)``
-  * ReLU kills half of the neurons: ``W = np.random.randn(Din, Dout) / np.sqrt(Din / 2)``
+  * Kaiming initializaion: Due to the reason that ReLU kills half of the neurons, ``W = np.random.randn(Din, Dout) / np.sqrt(Din / 2)``
   * It is possible and common to initialize the biases to be zero, since the asymmetry breaking is provided by the small random numbers in the weights. 
 
 ### P14
@@ -576,13 +576,14 @@ for gate in reversed(self.graph.nodes_topologically_sorted()):
 
 * Start training
 
-  * quantities that should be monitored: loss, train/val accuracy, ratio of the update magnitudes, the first-layer weights in ConvNets
+  * Quantities that should be monitored: loss, train/val accuracy, ratio of the update magnitudes, the first-layer weights in ConvNets
 
 * Start with small regularization and find learning rate that makes the loss go down: [1e-3, 1e-5]
     * If the loss not going down, that means the learning rate is too low; if the loss is NaN, that means a high learning rate
     * If there is a big gap between training accuracy and validation accuracy, that means overfitting (increase regularization or get more data); if there is no gap, that means you can increase your model capacity
     * If accuracy still going up, you need to train longer
-
+* Early stop: when validation loss starts going up
+    
 * **Hyperparameter Optimization**
 
   * Learning rate, regularization, learning rate decay, model size
@@ -703,7 +704,7 @@ for gate in reversed(self.graph.nodes_topologically_sorted()):
   * Inverse sqrt: $\alpha_t=\alpha_0/\sqrt t$
     * 1/t decay: $\alpha = \alpha_0/(1+kt)$
     * Start woth no decay, and observe the loss curve to find where need decay
-  * High initial learning rates can make loss explode; linearly increasing learning rate from 0 over the first ~5000 iterations can prevent this
+  * Warm up: High initial learning rates can make loss explode; linearly increasing learning rate from 0 over the first ~5000 iterations can prevent this
   * If increase the batch size by N, also scale the initial learning rate by N
   
 * First-Order Optimization: use gradient form linear approximation, and step to minimize the approximation
